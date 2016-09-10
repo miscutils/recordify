@@ -1,0 +1,9 @@
+{
+  "name": "miscutils.recordify.host",
+  "description": "Spotify Recording Host",
+  "path": "HOST_PATH",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://gplnffkebnplajiimfoknlimheoejfbp/"
+  ]
+}
