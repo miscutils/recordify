@@ -1,5 +1,7 @@
 VENV_DIR = .venv
 VENV_RUN = source $(VENV_DIR)/bin/activate
+DIST_FOLDER = dist
+DIST_ARCHIVE = $(DIST_FOLDER)/extension.zip
 
 usage:             ## Show this help
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -19,5 +21,9 @@ install:           ## Install host to Chrome "NativeMessagingHosts" folder
 uninstall:         ## Uninstall host from Chrome "NativeMessagingHosts" folder
 	bin/uninstall_host.sh
 
+package:           ## Package the extension as a zip file
+	mkdir -p $(DIST_FOLDER)
+	zip -r $(DIST_ARCHIVE) app bin host LICENSE manifest.json README.md requirements.txt
+
 clean:
-	rm -rf $(VENV_DIR)
+	rm -rf $(VENV_DIR) $(DIST_FOLDER)

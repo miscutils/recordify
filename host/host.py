@@ -42,6 +42,8 @@ CMD_MID3V2 = 'mid3v2'
 CMD_LAME = 'lame'
 CMD_WGET = 'wget'
 TMP_COVER_FILE_PREFIX = '/tmp/cover.'
+# additional PATH entries
+ADDITIONAL_PATHS = '/usr/bin:/usr/local/bin:/opt/local/bin'
 # maximum amount to allow a file to be truncated or too long to discard it
 MAX_TIME_DIFF_SECS = 7
 # whether to overwrite files with the same name
@@ -72,11 +74,17 @@ def write_file(file, content, append=False):
   f.write(content)
   f.close()
 
+def get_env():
+  env = dict(os.environ)
+  path = env.get('PATH') or ''
+  env['PATH'] = '%s:%s' % (path, ADDITIONAL_PATHS)
+  return env
+
 def run_sync(cmd):
-  return subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT)
+  return subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, env=get_env())
 
 def run(cmd, wait=False):
-  result = subprocess.Popen(cmd, shell=True, stderr=subprocess.STDOUT)
+  result = subprocess.Popen(cmd, shell=True, stderr=subprocess.STDOUT, env=get_env())
   if wait:
     result.wait()
   return result
